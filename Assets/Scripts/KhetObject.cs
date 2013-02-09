@@ -17,12 +17,15 @@ public enum KhetModifier
 public class KhetObject {
     public readonly KhetObjectType type;
     public readonly GameObject obj;
+    public readonly KhetColor color;
     public int x;
     public int y;
-    public KhetObject(int x, int y, KhetObjectType type, KhetColor color, Quaternion rotation)
+    public short direction;
+    public KhetObject(int x, int y, KhetObjectType type, KhetColor color, int direction)
     {
         this.x = x;
         this.y = y;
+        this.color = color;
         if (GameArea.area[x, y].obj != null)
         {
             return;
@@ -30,7 +33,8 @@ public class KhetObject {
         if ((GameArea.area[x, y].mod == KhetModifier.RedBlock && color == KhetColor.Silver) || (GameArea.area[x, y].mod == KhetModifier.SilverBlock && color == KhetColor.Red)) return;
         GameArea.area[x, y].obj = this;
         this.type = type;
-        obj = (GameObject)GameObject.Instantiate(type.mesh, new Vector3(x * 10, 0, y * 10), rotation);
+        obj = (GameObject)GameObject.Instantiate(type.mesh, new Vector3(x * 10, 0, y * 10), Quaternion.Euler(0, Mathf.Clamp(90 * direction + 180,0, 360), 0));
+        obj.transform.tag = "KhetObject";
         if (color == KhetColor.Red)
         {
             obj.GetComponent<KhetGameObject>().SetMaterial(type.RedMaterial);
