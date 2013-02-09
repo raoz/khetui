@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public delegate bool Move(int startX, int startY, int endX, int EndY);
 public delegate bool Rotate(int x, int y, bool clockwise);
@@ -98,6 +99,8 @@ public class KhetServer
         KhetObject obj = GameArea.area[startX, startY].obj;
         if (obj.color != turn)
             return false;
+        if (obj.type.name == "Sphinx")
+            return false;
         GameArea.area[startX, startY].obj = null;
         GameArea.area[endX, endY].obj = obj;
         obj.x = endX;
@@ -116,8 +119,25 @@ public class KhetServer
         KhetObject obj = GameArea.area[x, y].obj;
         if (obj.color != turn)
             return false;
+        if (obj.type.name == "Sphinx")
+        {
+            short newdirection;
+            if (clockwise) newdirection = (short)((obj.direction + 1) % 4);
+            else newdirection = (short)((obj.direction - 1 + 4) % 4);
+            Debug.Log(newdirection);
+            if (obj.color == KhetColor.Silver)
+            {
+                if (newdirection != 0 && newdirection != 3)
+                    return false;
+            }
+            if (obj.color == KhetColor.Red)
+            {
+                if (newdirection != 1 && newdirection != 2)
+                    return false;
+            }
+        }
         if (clockwise) obj.direction = (short)((obj.direction + 1) % 4);
-        else obj.direction = (short)((obj.direction - 1) % 4);
+        else obj.direction = (short)((obj.direction - 1 + 4) % 4);
         iTween.RotateTo(obj.obj, new Vector3(0, obj.direction * 90 + 180, 0), 1.1f);
         EndTurn();
         return true;
@@ -136,5 +156,23 @@ public class KhetServer
             silver.StopInput();
             red.StartInput();            
         }
+    }
+    void FireRedLaser()
+    {
+        int direction = GameArea.area[0,9].obj.direction;
+        Laser(new Ray(new Vector3(0, 3, 90), new Vector3(direction % 2, 0, -((direction + 1) % 2))));
+    }
+    void FireSilverLaser()
+    {
+        int direction = GameArea.area[7, 0].obj.direction;
+        Laser(new Ray(new Vector3(70, 3, 0), new Vector3(-direction, 0, (direction + 1) % 2)));
+    }
+    void Laser(Ray original)
+    {
+        LineRenderer laser = GameObject.Find("Laser").GetComponent<LineRenderer>();
+        
+        RaycastHit hit;
+        Physics.Raycast(original, out hit, 100);
+        
     }
 }
