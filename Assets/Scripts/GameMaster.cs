@@ -3,7 +3,6 @@ using System.Collections;
 
 public class GameMaster : MonoBehaviour {
 
-	// Use this for initialization
 	void Start () {
         GameArea.Init();
         new KhetObjectType("Pyramid");
@@ -11,7 +10,4 @@ public class GameMaster : MonoBehaviour {
         new KhetObject(1, 1, KhetObjectType.Types[0], KhetColor.Silver, Quaternion.identity);
 	}
 
-    //void Update () {
-	
-    //}
 }
