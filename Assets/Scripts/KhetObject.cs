@@ -17,8 +17,12 @@ public enum KhetModifier
 public class KhetObject {
     public readonly KhetObjectType type;
     public readonly GameObject obj;
+    public int x;
+    public int y;
     public KhetObject(int x, int y, KhetObjectType type, KhetColor color, Quaternion rotation)
     {
+        this.x = x;
+        this.y = y;
         if (GameArea.area[x, y].obj != null)
         {
             return;

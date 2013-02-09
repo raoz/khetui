@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\KhetGameObject.cs" />
      <Compile Include="Assets\Scripts\KhetObject.cs" />
      <Compile Include="Assets\Scripts\KhetObjectType.cs" />
+     <Compile Include="Assets\Scripts\KhetServer.cs" />
      <Compile Include="Assets\iTween\Plugins\iTween.cs" />
      <Compile Include="Assets\iTween\Sample\MoveSample.cs" />
      <Compile Include="Assets\iTween\Sample\RotateSample.cs" />
