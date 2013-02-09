@@ -2,14 +2,15 @@ using UnityEngine;
 using System.Collections;
 
 public class KhetGameObject : MonoBehaviour {
-    public GameObject main;
+    public GameObject[] retextured;
 	void Start () {
-        if (main == null)
-            main = gameObject;
+        if (retextured.Length == 0)
+            throw new System.ApplicationException("Missing texture target");
 	}
 
     public void SetMaterial(Material mat)
     {
-        main.GetComponent<MeshRenderer>().material = mat;
+        foreach(GameObject go in retextured)
+            go.GetComponent<MeshRenderer>().material = mat;
     }
 }

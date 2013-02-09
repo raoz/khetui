@@ -18,12 +18,12 @@ public class KhetObjectType{
             return nextid;
         }
     }
-    public KhetObjectType(string name)
+    public KhetObjectType(string name, string matname = "Main")
     {
         id = NextId;
         this.name = name;
-        RedMaterial = (Material)Resources.Load("Material/Red/" + name);
-        SilverMaterial = (Material)Resources.Load("Material/Silver/" + name);
+        RedMaterial = (Material)Resources.Load("Material/Red/" + matname);
+        SilverMaterial = (Material)Resources.Load("Material/Silver/" + matname);
         mesh = (Object)Resources.Load("Mesh/" + name);
         Types.Add(this);
     }
