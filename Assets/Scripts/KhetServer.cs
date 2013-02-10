@@ -213,12 +213,22 @@ public class KhetServer
                 ShowLaser(laserpath);
                 Debug.Log("Hit board");
                 return;
-            }
+            }           
             int x = (int)Mathf.Round(hit.point.x / 10);
             int y = (int)Mathf.Round(hit.point.z / 10);
+            if (hit.transform.name == "Pharaoh")
+            {
+                Result result;
+                if(GameArea.area[x,y].obj.color == KhetColor.Red)
+                    result = Result.SilverWon;
+                else
+                    result = Result.RedWon;
+                Debug.Log(result);
+                silver.GameOver(result);
+                red.GameOver(result);
+            }
             Debug.Log(x + ":" + y);
-            iTween.MoveTo(GameArea.area[x, y].obj.obj, new Vector3(100, 1000, 100), 150);
-            Object.Destroy(GameArea.area[x, y].obj.obj, 10);
+            Object.Destroy(GameArea.area[x, y].obj.obj);
             GameArea.area[x, y].obj = null;
         }
         ShowLaser(laserpath);

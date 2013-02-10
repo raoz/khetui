@@ -5,6 +5,8 @@ public class GUIManager : MonoBehaviour {
     public static bool ShowObjectTools;
     public static Action RotateClockwise;
     public static Action RotateCounterClockwise;
+    public static string GameResult = "";
+    public GUIStyle resultstyle;
     void OnGUI()
     {
         if (ShowObjectTools)
@@ -15,5 +17,6 @@ public class GUIManager : MonoBehaviour {
             if(GUI.Button(new Rect(Screen.width - 195, 35, 190, 20), "Rotate counterclockwise"))
                 RotateCounterClockwise();
         }
+        GUI.Label(new Rect(5, Screen.height / 2 - 100, Screen.width - 10, 200), GameResult, resultstyle);
     }
 }

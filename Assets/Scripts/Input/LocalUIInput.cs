@@ -71,6 +71,27 @@ public class LocalUIInput : KhetInput {
             }
         }
     }
+    public override void GameOver(Result result)
+    {
+        if(color == KhetColor.Silver)
+        {
+            if (result == Result.SilverWon)
+                GUIManager.GameResult = "Silver won!";
+            else if (result == Result.RedWon)
+                GUIManager.GameResult = "Red won!";
+            else
+                GUIManager.GameResult = "Draw!";
+        }
+        if (color == KhetColor.Red)
+        {
+            if (result == Result.SilverWon)
+                GUIManager.GameResult = "Silver won!";
+            else if (result == Result.RedWon)
+                GUIManager.GameResult = "Red won!";
+            else
+                GUIManager.GameResult = "Draw!";
+        }
+    }
     public void RotateClockwise()
     {
         OnRotate((int)selpos.x, (int)selpos.y, true);

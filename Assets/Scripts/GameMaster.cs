@@ -21,14 +21,17 @@ public class GameMaster : MonoBehaviour {
         new KhetObjectType("Pyramid");
         new KhetObjectType("Sphinx");
         new KhetObjectType("Anubis");
+        new KhetObjectType("Pharaoh");
         
         new KhetObject(9, 0, KhetObjectType.Types[1], KhetColor.Silver, 0);
         new KhetObject(2, 0, KhetObjectType.Types[0], KhetColor.Silver, 3);
         new KhetObject(3, 0, KhetObjectType.Types[2], KhetColor.Silver, 0);
         new KhetObject(5, 0, KhetObjectType.Types[2], KhetColor.Silver, 0);
+        new KhetObject(4, 0, KhetObjectType.Types[3], KhetColor.Silver, 0);
         new KhetObject(0, 7, KhetObjectType.Types[1], KhetColor.Red, 2);
         new KhetObject(4, 7, KhetObjectType.Types[2], KhetColor.Red, 2);
         new KhetObject(6, 7, KhetObjectType.Types[2], KhetColor.Red, 2);
+        new KhetObject(5, 7, KhetObjectType.Types[3], KhetColor.Red, 2);
         #region //HACK Test region
         KhetServer.Instance.SetupRedInput(new LocalUIInput(KhetColor.Red));
         KhetServer.Instance.SetupSilverInput(new LocalUIInput(KhetColor.Silver));
