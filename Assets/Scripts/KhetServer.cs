@@ -144,7 +144,7 @@ public class KhetServer
             obj.direction = (short)((obj.direction + 1) % 4);
         else 
             obj.direction = (short)((obj.direction - 1 + 4) % 4);
-        iTween.RotateTo(obj.obj, new Vector3(0, obj.direction * 90, 0), 1.1f);
+        iTween.RotateTo(obj.obj, new Vector3(obj.obj.transform.rotation.eulerAngles.x, obj.direction * 90, 0), 1.1f);
         EndTurn();
         return true;
     }
@@ -199,6 +199,11 @@ public class KhetServer
         else
         {
             if (hit.transform.name == "Sphinx")
+            {
+                ShowLaser(laserpath);
+                return;
+            }
+            if (hit.transform.name == "Shield")
             {
                 ShowLaser(laserpath);
                 return;
