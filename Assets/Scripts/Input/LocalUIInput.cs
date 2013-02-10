@@ -12,9 +12,10 @@ public class LocalUIInput : KhetInput {
             return null;
         }
     }
-    public LocalUIInput(KhetColor color)
+    public LocalUIInput(KhetColor color, string name)
     {
         this.color = color;
+        this.name = name;
     }
     bool AcceptingInput = false;
     private KhetColor color;
@@ -26,9 +27,9 @@ public class LocalUIInput : KhetInput {
         if (AcceptingInput)
         {
             if (selection)
-                GUIManager.ShowObjectTools = true;
+                GameGUIManager.ShowObjectTools = true;
             else
-                GUIManager.ShowObjectTools = false;
+                GameGUIManager.ShowObjectTools = false;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
@@ -77,20 +78,20 @@ public class LocalUIInput : KhetInput {
         if(color == KhetColor.Silver)
         {
             if (result == Result.SilverWon)
-                GUIManager.GameResult = "Silver won!";
+                GameGUIManager.GameResult = "Silver won!";
             else if (result == Result.RedWon)
-                GUIManager.GameResult = "Red won!";
+                GameGUIManager.GameResult = "Red won!";
             else
-                GUIManager.GameResult = "Draw!";
+                GameGUIManager.GameResult = "Draw!";
         }
         if (color == KhetColor.Red)
         {
             if (result == Result.SilverWon)
-                GUIManager.GameResult = "Silver won!";
+                GameGUIManager.GameResult = "Silver won!";
             else if (result == Result.RedWon)
-                GUIManager.GameResult = "Red won!";
+                GameGUIManager.GameResult = "Red won!";
             else
-                GUIManager.GameResult = "Draw!";
+                GameGUIManager.GameResult = "Draw!";
         }
     }
     public void RotateClockwise()
@@ -107,13 +108,13 @@ public class LocalUIInput : KhetInput {
     {
         AcceptingInput = true;
         currentinstance = this;
-        GUIManager.RotateClockwise = RotateClockwise;
-        GUIManager.RotateCounterClockwise = RotateCounterClockwise;
+        GameGUIManager.RotateClockwise = RotateClockwise;
+        GameGUIManager.RotateCounterClockwise = RotateCounterClockwise;
     }
     public override void StopInput()
     {
         AcceptingInput = false;
-        GUIManager.ShowObjectTools = false;
+        GameGUIManager.ShowObjectTools = false;
         GameObject.Destroy(highlighter);
         GameObject.Destroy(selection);
     }

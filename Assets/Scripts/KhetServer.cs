@@ -209,7 +209,9 @@ public class KhetServer
         try
         {
             Debug.Log("----");
-            while (GameArea.area[x, y].obj == null || GameArea.area[x, y].obj.HasMirror(direction) || GameArea.area[x, y].obj.type.name == "Sphinx")
+            x += direction == 1 ? 1 : direction == 3 ? -1 : 0;
+            y += direction == 0 ? 1 : direction == 2 ? -1 : 0;
+            while (GameArea.area[x, y].obj == null || GameArea.area[x, y].obj.HasMirror(direction))
             {
                 Debug.Log(x + ":" + y + " towards " + direction);
                 if (GameArea.area[x, y].obj != null  && GameArea.area[x, y].obj.HasMirror(direction))

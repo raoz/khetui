@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class GUIManager : MonoBehaviour {
+public class GameGUIManager : MonoBehaviour {
     public static bool ShowObjectTools;
     public static Action RotateClockwise;
     public static Action RotateCounterClockwise;

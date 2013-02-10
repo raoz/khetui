@@ -44,8 +44,8 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\GUIManager.cs" />
      <Compile Include="Assets\Scripts\GameArea.cs" />
+     <Compile Include="Assets\Scripts\GameGUIManager.cs" />
      <Compile Include="Assets\Scripts\GameMaster.cs" />
      <Compile Include="Assets\Scripts\Input\KhetInput.cs" />
      <Compile Include="Assets\Scripts\Input\LocalUIInput.cs" />
@@ -53,6 +53,7 @@
      <Compile Include="Assets\Scripts\KhetObject.cs" />
      <Compile Include="Assets\Scripts\KhetObjectType.cs" />
      <Compile Include="Assets\Scripts\KhetServer.cs" />
+     <Compile Include="Assets\Scripts\SettingManager.cs" />
      <Compile Include="Assets\Unify\CameraControl.cs" />
      <Compile Include="Assets\iTween\Plugins\iTween.cs" />
      <Compile Include="Assets\iTween\Sample\MoveSample.cs" />

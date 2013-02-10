@@ -29,17 +29,33 @@ public class GameMaster : MonoBehaviour {
         new KhetObject(3, 0, KhetObjectType.Types[2], KhetColor.Silver, 0);
         new KhetObject(5, 0, KhetObjectType.Types[2], KhetColor.Silver, 0);
         new KhetObject(4, 0, KhetObjectType.Types[3], KhetColor.Silver, 0);
-        new KhetObject(4, 3, KhetObjectType.Types[4], KhetColor.Silver, 2);
-        new KhetObject(5, 3, KhetObjectType.Types[4], KhetColor.Silver, 1);
+        new KhetObject(4, 3, KhetObjectType.Types[4], KhetColor.Silver, 3);
+        new KhetObject(5, 3, KhetObjectType.Types[4], KhetColor.Silver, 2);
         new KhetObject(0, 7, KhetObjectType.Types[1], KhetColor.Red, 2);
         new KhetObject(4, 7, KhetObjectType.Types[2], KhetColor.Red, 2);
         new KhetObject(6, 7, KhetObjectType.Types[2], KhetColor.Red, 2);
         new KhetObject(5, 7, KhetObjectType.Types[3], KhetColor.Red, 2);
-        new KhetObject(4, 4, KhetObjectType.Types[4], KhetColor.Red, 3);
-        new KhetObject(5, 4, KhetObjectType.Types[4], KhetColor.Red, 0);
+        new KhetObject(4, 4, KhetObjectType.Types[4], KhetColor.Red, 0);
+        new KhetObject(5, 4, KhetObjectType.Types[4], KhetColor.Red, 1);
+        #region Blocks
+        GameArea.area[0, 0].mod = KhetModifier.RedBlock;       
+        GameArea.area[0, 1].mod = KhetModifier.RedBlock;
+        GameArea.area[0, 2].mod = KhetModifier.RedBlock;
+        GameArea.area[0, 5].mod = KhetModifier.RedBlock;
+        GameArea.area[0, 6].mod = KhetModifier.RedBlock;
+        GameArea.area[8, 0].mod = KhetModifier.RedBlock;
+        GameArea.area[8, 7].mod = KhetModifier.RedBlock;
+        GameArea.area[1, 0].mod = KhetModifier.SilverBlock;
+        GameArea.area[1, 7].mod = KhetModifier.SilverBlock;
+        GameArea.area[7, 1].mod = KhetModifier.SilverBlock;
+        GameArea.area[7, 2].mod = KhetModifier.SilverBlock;
+        GameArea.area[7, 5].mod = KhetModifier.SilverBlock;
+        GameArea.area[7, 6].mod = KhetModifier.SilverBlock;
+        GameArea.area[7, 7].mod = KhetModifier.SilverBlock;
+        #endregion
         #region //HACK Test region
-        KhetServer.Instance.SetupRedInput(new LocalUIInput(KhetColor.Red));
-        KhetServer.Instance.SetupSilverInput(new LocalUIInput(KhetColor.Silver));
+        KhetServer.Instance.SetupRedInput(new LocalUIInput(KhetColor.Red, "Player1"));
+        KhetServer.Instance.SetupSilverInput(new LocalUIInput(KhetColor.Silver, "Player2"));
         KhetServer.Instance.Start();
         #endregion
     }
