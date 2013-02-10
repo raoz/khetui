@@ -1,10 +1,23 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
+public class WaitedCall
+{
+    public Action act;
+    public float timeleft;
+    public WaitedCall(Action act, float t)
+    {
+        this.act = act;
+        timeleft = t;
+    }
+}
 
 public class GameMaster : MonoBehaviour {
-
+    public static GameMaster instance;
 	void Start () {
         GameArea.Init();
+        instance = this;
         new KhetObjectType("Pyramid");
         new KhetObjectType("Sphinx");
         
@@ -17,10 +30,20 @@ public class GameMaster : MonoBehaviour {
         KhetServer.Instance.Start();
         #endregion
     }
+    
     void Update()
     {
         if (LocalUIInput.CurrentInstance != null)
             LocalUIInput.CurrentInstance.Update();
+        for(int i = 0; i < ToInvoke.Count; i++)
+        {
+            ToInvoke[i].timeleft -= Time.deltaTime;
+            if (ToInvoke[i].timeleft < 0)
+            {
+                ToInvoke[i].act();
+                ToInvoke.RemoveAt(i);
+            }
+        }
     }
-
+    public static List<WaitedCall> ToInvoke = new List<WaitedCall>();
 }

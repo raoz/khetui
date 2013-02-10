@@ -116,15 +116,19 @@ public class KhetServer
         {
             return false;
         }
+        Debug.Log(clockwise);
         KhetObject obj = GameArea.area[x, y].obj;
         if (obj.color != turn)
             return false;
         if (obj.type.name == "Sphinx")
         {
             short newdirection;
-            if (clockwise) newdirection = (short)((obj.direction + 1) % 4);
-            else newdirection = (short)((obj.direction - 1 + 4) % 4);
-            Debug.Log(newdirection);
+            //Debug.Log(obj.direction);
+            if (clockwise == true) 
+                newdirection = (short)((obj.direction + 1) % 4);
+            else 
+                newdirection = (short)((obj.direction - 1 + 4) % 4);
+            //Debug.Log(newdirection);
             if (obj.color == KhetColor.Silver)
             {
                 if (newdirection != 0 && newdirection != 3)
@@ -136,9 +140,11 @@ public class KhetServer
                     return false;
             }
         }
-        if (clockwise) obj.direction = (short)((obj.direction + 1) % 4);
-        else obj.direction = (short)((obj.direction - 1 + 4) % 4);
-        iTween.RotateTo(obj.obj, new Vector3(0, obj.direction * 90 + 180, 0), 1.1f);
+        if (clockwise == true) 
+            obj.direction = (short)((obj.direction + 1) % 4);
+        else 
+            obj.direction = (short)((obj.direction - 1 + 4) % 4);
+        iTween.RotateTo(obj.obj, new Vector3(0, obj.direction * 90, 0), 1.1f);
         EndTurn();
         return true;
     }
@@ -148,31 +154,80 @@ public class KhetServer
         {
             turn = KhetColor.Silver;
             red.StopInput();
-            silver.StartInput();            
+            silver.StartInput();
+            GameMaster.ToInvoke.Add(new WaitedCall(FireRedLaser, 1.2f));
         }
         else
         {
             turn = KhetColor.Red;
             silver.StopInput();
-            red.StartInput();            
+            red.StartInput();
+            GameMaster.ToInvoke.Add(new WaitedCall(FireSilverLaser, 1.2f));
         }
-    }
+    }   
+
     void FireRedLaser()
     {
-        int direction = GameArea.area[0,9].obj.direction;
-        Laser(new Ray(new Vector3(0, 3, 90), new Vector3(direction % 2, 0, -((direction + 1) % 2))));
+        int direction = GameArea.area[0, 7].obj.direction;
+        Laser(new Ray(new Vector3(0, 4, 70), new Vector3(direction % 2, 0, -((direction + 1) % 2))));
     }
     void FireSilverLaser()
     {
-        int direction = GameArea.area[7, 0].obj.direction;
-        Laser(new Ray(new Vector3(70, 3, 0), new Vector3(-direction, 0, (direction + 1) % 2)));
+        int direction = GameArea.area[9, 0].obj.direction;
+        Laser(new Ray(new Vector3(90, 4, 0), new Vector3(-direction, 0, (direction + 1) % 2)));
     }
     void Laser(Ray original)
-    {
-        LineRenderer laser = GameObject.Find("Laser").GetComponent<LineRenderer>();
-        
+    {        
+        List<Vector3> laserpath = new List<Vector3>();
+        laserpath.Add(original.origin);
         RaycastHit hit;
-        Physics.Raycast(original, out hit, 100);
-        
+        Ray ray = original;
+        Physics.Raycast(ray, out hit, 100);
+        while (hit.collider != null)
+        {            
+            laserpath.Add(hit.point);
+            if (hit.collider.tag != "Mirror")
+                break;
+            ray.direction = Vector3.Reflect(ray.direction, hit.normal);           
+            ray.origin = hit.point;
+            Physics.Raycast(ray, out hit, 100);
+        }
+        if (hit.collider == null)
+        {
+            laserpath.Add(ray.origin + (ray.direction * 1000));
+        }
+        else
+        {
+            if (hit.transform.name == "Sphinx")
+            {
+                ShowLaser(laserpath);
+                return;
+            }
+            if (hit.transform.name == "Board")
+            {
+                ShowLaser(laserpath);
+                Debug.Log("Hit board");
+                return;
+            }
+            int x = (int)Mathf.Round(hit.point.x / 10);
+            int y = (int)Mathf.Round(hit.point.z / 10);
+            Debug.Log(x + ":" + y);
+            iTween.MoveTo(GameArea.area[x, y].obj.obj, new Vector3(100, 1000, 100), 150);
+            Object.Destroy(GameArea.area[x, y].obj.obj, 10);
+            GameArea.area[x, y].obj = null;
+        }
+        ShowLaser(laserpath);
+    }
+    void ShowLaser(List<Vector3> path)
+    {
+        GameObject laser = new GameObject("Laser");
+        LineRenderer laserrenderer = laser.AddComponent<LineRenderer>();
+        laserrenderer.material.color = Color.red;
+        laserrenderer.SetVertexCount(path.Count);
+        for (int i = 0; i < path.Count; i++)
+        {
+            laserrenderer.SetPosition(i, path[i]);
+        }
+        Object.Destroy(laser, 0.6f);
     }
 }
