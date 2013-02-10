@@ -18,11 +18,12 @@ public class GameMaster : MonoBehaviour {
 	void Start () {
         GameArea.Init();
         instance = this;
-        new KhetObjectType("Pyramid");
-        new KhetObjectType("Sphinx");
-        new KhetObjectType("Anubis");
-        new KhetObjectType("Pharaoh");
-        new KhetObjectType("Scarab", "Scarab");
+        KhetObjectType.ClearTypes(42);
+        new KhetObjectType("Pyramid", CurrentGameSettings.Instance.simplified3D);
+        new KhetObjectType("Sphinx", CurrentGameSettings.Instance.simplified3D);
+        new KhetObjectType("Anubis", CurrentGameSettings.Instance.simplified3D);
+        new KhetObjectType("Pharaoh", CurrentGameSettings.Instance.simplified3D);
+        new KhetObjectType("Scarab", CurrentGameSettings.Instance.simplified3D, "Scarab");
         
         new KhetObject(9, 0, KhetObjectType.Types[1], KhetColor.Silver, 0);
         new KhetObject(2, 0, KhetObjectType.Types[0], KhetColor.Silver, 3);

@@ -30,6 +30,7 @@ public class KhetServer
         throw new System.Security.SecurityException("Tried to destroy Khet instance with wrong key!!!");
     }
     #endregion
+    public int turnid = 0;
     public void Start()
     {
         silver.StartInput();
@@ -174,6 +175,16 @@ public class KhetServer
     }
     void EndTurn()
     {
+        turnid++;
+        if (turnid > CurrentGameSettings.Instance.turnslimit && CurrentGameSettings.Instance.limitturns)
+        {
+            Result result = Result.Draw;
+            Debug.Log(result);
+            silver.GameOver(result);
+            red.GameOver(result);
+            silver.StopInput();
+            red.StopInput();
+        }
         if (turn == KhetColor.Red)
         {
             turn = KhetColor.Silver;
@@ -265,6 +276,8 @@ public class KhetServer
             }
             if (!GameArea.area[x, y].obj.IsShielded(direction))
             {
+                GameObject go = (GameObject)GameObject.Instantiate((Object)Resources.Load("Death"));
+                go.transform.position = GameArea.area[x, y].obj.obj.transform.position;
                 Object.Destroy(GameArea.area[x, y].obj.obj);
                 GameArea.area[x, y].obj = null;
             }

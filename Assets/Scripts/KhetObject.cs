@@ -33,7 +33,7 @@ public class KhetObject {
         if ((GameArea.area[x, y].mod == KhetModifier.RedBlock && color == KhetColor.Silver) || (GameArea.area[x, y].mod == KhetModifier.SilverBlock && color == KhetColor.Red)) return;
         GameArea.area[x, y].obj = this;
         this.type = type;
-        obj = (GameObject)GameObject.Instantiate(type.mesh, new Vector3(x * 10, 0, y * 10), Quaternion.Euler(type.name == "Anubis" ? 270 : 0, 90 * direction, 0));
+        obj = (GameObject)GameObject.Instantiate(type.mesh, new Vector3(x * 10, 0, y * 10), Quaternion.Euler(0, 90 * direction, 0));
         obj.transform.tag = "KhetObject";
         obj.transform.name = type.name;
         this.direction = direction;

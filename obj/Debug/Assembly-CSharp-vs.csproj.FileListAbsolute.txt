@@ -1,0 +1,10 @@
+C:\Users\Rao Zvorovski\KhetUI\Temp\bin\Debug\Assembly-CSharp.dll
+C:\Users\Rao Zvorovski\KhetUI\Temp\bin\Debug\Assembly-CSharp.pdb
+C:\Users\Rao Zvorovski\KhetUI\Temp\bin\Debug\UnityEditor.dll
+C:\Users\Rao Zvorovski\KhetUI\Temp\bin\Debug\UnityEngine.dll
+C:\Users\Rao Zvorovski\KhetUI\Temp\bin\Debug\Mono.Cecil.dll
+C:\Users\Rao Zvorovski\KhetUI\Temp\bin\Debug\nunit.framework.dll
+C:\Users\Rao Zvorovski\KhetUI\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+C:\Users\Rao Zvorovski\KhetUI\obj\Debug\Assembly-CSharp-vs.csprojResolveAssemblyReference.cache
+C:\Users\Rao Zvorovski\KhetUI\obj\Debug\Assembly-CSharp.dll
+C:\Users\Rao Zvorovski\KhetUI\obj\Debug\Assembly-CSharp.pdb

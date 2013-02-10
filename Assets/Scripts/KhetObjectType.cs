@@ -18,13 +18,28 @@ public class KhetObjectType{
             return nextid;
         }
     }
-    public KhetObjectType(string name, string matname = "Main")
+    public KhetObjectType(string name, bool twodimensional, string matname = "Main")
     {
         id = NextId;
         this.name = name;
-        RedMaterial = (Material)Resources.Load("Material/Red/" + matname);
-        SilverMaterial = (Material)Resources.Load("Material/Silver/" + matname);
-        mesh = (Object)Resources.Load("Mesh/" + name);
+        if (!twodimensional)
+        {
+            RedMaterial = (Material)Resources.Load("Material/Red/" + matname);
+            SilverMaterial = (Material)Resources.Load("Material/Silver/" + matname);
+            mesh = (Object)Resources.Load("Mesh/" + name);
+        }
+        else
+        {
+            RedMaterial = (Material)Resources.Load("Material/2d/Red/" + name);
+            SilverMaterial = (Material)Resources.Load("Material/2d/Silver/" + name);
+            mesh = (Object)Resources.Load("Mesh/2d/" + name);
+        }
         Types.Add(this);
+    }
+    public static void ClearTypes(int key)
+    {
+        if (key != 42)
+            throw new System.Security.SecurityException("Trying to clear KhetObjectTypes without correct key");
+        Types = new List<KhetObjectType>();
     }
 }

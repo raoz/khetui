@@ -24,15 +24,16 @@ public class LocalUIInput : KhetInput {
     private Vector2 selpos;
     public void Update()
     {
-        if (AcceptingInput)
+        if (AcceptingInput && !GameGUIManager.areyousuredialog)
         {
+            if (Input.GetKeyDown(KeyCode.Escape))
+                GameObject.Destroy(selection);
             if (selection)
                 GameGUIManager.ShowObjectTools = true;
             else
                 GameGUIManager.ShowObjectTools = false;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-
             Physics.Raycast(ray, out hit, 1000);
             if (hit.collider != null)
             {
