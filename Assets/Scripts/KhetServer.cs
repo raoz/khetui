@@ -92,15 +92,39 @@ public class KhetServer
     {
         if (GameArea.area[startX, startY].obj == null)
             return false;
-        if (GameArea.area[endX, endY].obj != null)
+        KhetObject obj = GameArea.area[startX, startY].obj;
+        if (GameArea.area[endX, endY].mod == KhetModifier.RedBlock && turn == KhetColor.Silver)
+            return false;
+        if (GameArea.area[endX, endY].mod == KhetModifier.SilverBlock && turn == KhetColor.Red)
+            return false;
+        if (GameArea.area[endX, endY].obj != null && obj.type.name != "Scarab")
             return false;
         if (Mathf.Abs(startX - endX) > 1 || Mathf.Abs(startY - endY) > 1)
             return false;
-        KhetObject obj = GameArea.area[startX, startY].obj;
         if (obj.color != turn)
             return false;
         if (obj.type.name == "Sphinx")
             return false;
+        if (obj.type.name == "Scarab" && GameArea.area[endX, endY].obj != null)
+        {
+            KhetColor toswitch = GameArea.area[endX, endY].obj.color;
+            if (toswitch == KhetColor.Red && GameArea.area[startX, startY].mod == KhetModifier.SilverBlock)
+                return false;
+            if (toswitch == KhetColor.Silver && GameArea.area[startX, startY].mod == KhetModifier.RedBlock)
+                return false;
+            iTween.MoveTo(obj.obj, new Vector3(endX * 10, 0, endY * 10), 1.1f);
+            obj.x = endX;
+            obj.y = endY;
+            iTween.MoveTo(GameArea.area[endX, endY].obj.obj, new Vector3(startX * 10, 0, startY * 10), 1.1f);
+            GameArea.area[endX, endY].obj.x = startX;
+            GameArea.area[endX, endY].obj.y = startY;
+            KhetObject temp = GameArea.area[startX, startY].obj;
+            GameArea.area[startX, startY].obj = GameArea.area[endX, endY].obj;
+            GameArea.area[endX, endY].obj = temp;
+            Debug.Log(GameArea.area[startX, startY].obj.type.name);
+            EndTurn();
+            return true;
+        }        
         GameArea.area[startX, startY].obj = null;
         GameArea.area[endX, endY].obj = obj;
         obj.x = endX;
@@ -169,34 +193,49 @@ public class KhetServer
     void FireRedLaser()
     {
         int direction = GameArea.area[0, 7].obj.direction;
-        Laser(new Ray(new Vector3(0, 4, 70), new Vector3(direction % 2, 0, -((direction + 1) % 2))));
+        Laser(0, 7, direction);
     }
     void FireSilverLaser()
     {
         int direction = GameArea.area[9, 0].obj.direction;
-        Laser(new Ray(new Vector3(90, 4, 0), new Vector3(-direction, 0, (direction + 1) % 2)));
+        Laser(9, 0, direction);
     }
-    void Laser(Ray original)
+    void Laser(int x, int y, int direction)
     {        
         List<Vector3> laserpath = new List<Vector3>();
-        laserpath.Add(original.origin);
-        RaycastHit hit;
-        Ray ray = original;
-        Physics.Raycast(ray, out hit, 100);
-        while (hit.collider != null)
-        {            
-            laserpath.Add(hit.point);
-            if (hit.collider.tag != "Mirror")
-                break;
-            ray.direction = Vector3.Reflect(ray.direction, hit.normal);           
-            ray.origin = hit.point;
-            Physics.Raycast(ray, out hit, 100);
-        }
-        if (hit.collider == null)
+        laserpath.Add(new Vector3(x * 10, 4, y * 10));
+        KhetObject khethit;
+        GameObject hit = null;
+        try
         {
-            laserpath.Add(ray.origin + (ray.direction * 1000));
+            Debug.Log("----");
+            while (GameArea.area[x, y].obj == null || GameArea.area[x, y].obj.HasMirror(direction) || GameArea.area[x, y].obj.type.name == "Sphinx")
+            {
+                Debug.Log(x + ":" + y + " towards " + direction);
+                if (GameArea.area[x, y].obj != null  && GameArea.area[x, y].obj.HasMirror(direction))
+                {
+                    laserpath.Add(new Vector3(x  * 10, 4, y * 10));
+                    direction = GameArea.area[x, y].obj.GetMirroredLaser(direction);
+                }
+                x += direction == 1 ? 1 : direction == 3 ? -1 : 0;
+                y += direction == 0 ? 1 : direction == 2 ? -1 : 0;
+            }
+            Debug.Log(x + ":" + y);
+            Debug.Log("----");
+            khethit = GameArea.area[x, y].obj;
+            laserpath.Add(new Vector3(x * 10, 4, y * 10));
+            hit = khethit.obj;
         }
-        else
+        catch ( System.Exception e)
+        {
+            Debug.Log(e.ToString());
+            x += direction == 1 ? 1000 : direction == 3 ? -1000 : 0;
+            y += direction == 0 ? 1000 : direction == 2 ? -1000: 0;
+            laserpath.Add(new Vector3(x * 10, 4, y * 10));
+            Debug.Log(x + ":" + y);
+            Debug.Log("----");
+        }
+        if (hit != null)
         {
             if (hit.transform.name == "Sphinx")
             {
@@ -213,21 +252,20 @@ public class KhetServer
                 ShowLaser(laserpath);
                 Debug.Log("Hit board");
                 return;
-            }           
-            int x = (int)Mathf.Round(hit.point.x / 10);
-            int y = (int)Mathf.Round(hit.point.z / 10);
+            }
             if (hit.transform.name == "Pharaoh")
             {
                 Result result;
-                if(GameArea.area[x,y].obj.color == KhetColor.Red)
+                if (GameArea.area[x, y].obj.color == KhetColor.Red)
                     result = Result.SilverWon;
                 else
                     result = Result.RedWon;
                 Debug.Log(result);
                 silver.GameOver(result);
                 red.GameOver(result);
+                silver.StopInput();
+                red.StopInput();
             }
-            Debug.Log(x + ":" + y);
             Object.Destroy(GameArea.area[x, y].obj.obj);
             GameArea.area[x, y].obj = null;
         }

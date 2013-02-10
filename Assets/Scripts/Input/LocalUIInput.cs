@@ -40,8 +40,9 @@ public class LocalUIInput : KhetInput {
                 if (Input.GetMouseButtonDown(0))
                 {
                     //Debug.Log(hit.point);
-                    if (GameArea.area[x, y].obj != null)
+                    if (GameArea.area[x, y].obj != null && (selection == null || GameArea.area[(int)selpos.x, (int)selpos.y].obj.type.name != "Scarab"))
                     {
+                        Debug.Log(1);
                         if (selection != null)
                             GameObject.Destroy(selection);
                         if (GameArea.area[x, y].obj.color == color)
