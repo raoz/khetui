@@ -50,11 +50,15 @@ public class KhetObject {
     {
         return (type.name == "Pyramid" && ((dir + 1) % 4 == direction || (dir + 2) % 4 == direction)) || type.name == "Scarab";
     }
+    public bool IsShielded(int dir)
+    {
+        return type.name == "Anubis" && (dir + 2) % 4 == direction;
+    }
     public int GetMirroredLaser(int dir)
     {
-        if (direction == 0 || direction == 2)
-            return 3 - dir;
         if (direction == 1 || direction == 3)
+            return 3 - dir;
+        if (direction == 0 || direction == 2)
             return dir == 0 ? 1 : dir == 1 ? 0 : dir == 2 ? 1 : 2;
         return -1;
     }

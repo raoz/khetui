@@ -99,7 +99,7 @@ public class KhetServer
             return false;
         if (GameArea.area[endX, endY].obj != null && obj.type.name != "Scarab")
             return false;
-        if (Mathf.Abs(startX - endX) > 1 || Mathf.Abs(startY - endY) > 1)
+        if (Mathf.Abs(startX - endX) > 1 || Mathf.Abs(startY - endY) > 1 || (Mathf.Abs(startX - endX) < 1 && Mathf.Abs(startY - endY) < 1))
             return false;
         if (obj.color != turn)
             return false;
@@ -178,14 +178,14 @@ public class KhetServer
         {
             turn = KhetColor.Silver;
             red.StopInput();
-            silver.StartInput();
+            GameMaster.ToInvoke.Add(new WaitedCall(silver.StartInput,2f));
             GameMaster.ToInvoke.Add(new WaitedCall(FireRedLaser, 1.2f));
         }
         else
         {
             turn = KhetColor.Red;
             silver.StopInput();
-            red.StartInput();
+            GameMaster.ToInvoke.Add(new WaitedCall(red.StartInput, 2f));
             GameMaster.ToInvoke.Add(new WaitedCall(FireSilverLaser, 1.2f));
         }
     }   
@@ -242,11 +242,6 @@ public class KhetServer
                 ShowLaser(laserpath);
                 return;
             }
-            if (hit.transform.name == "Shield")
-            {
-                ShowLaser(laserpath);
-                return;
-            }
             if (hit.transform.name == "Board")
             {
                 ShowLaser(laserpath);
@@ -266,8 +261,11 @@ public class KhetServer
                 silver.StopInput();
                 red.StopInput();
             }
-            Object.Destroy(GameArea.area[x, y].obj.obj);
-            GameArea.area[x, y].obj = null;
+            if (!GameArea.area[x, y].obj.IsShielded(direction))
+            {
+                Object.Destroy(GameArea.area[x, y].obj.obj);
+                GameArea.area[x, y].obj = null;
+            }
         }
         ShowLaser(laserpath);
     }
