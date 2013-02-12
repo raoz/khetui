@@ -113,8 +113,12 @@ public class SettingManager : MonoBehaviour {
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
                 GUILayout.FlexibleSpace();
-                if(GUILayout.Button("Start a new game", MenuSkin.button))
+                if (GUILayout.Button("Start a new game", MenuSkin.button))
+                {
+                    KhetServer.DestroyInstance(42);
+                    KhetObjectType.ClearTypes(42);
                     Application.LoadLevel(1);
+                }
                 if(GUILayout.Button("Back", MenuSkin.button))
                     state = MenuState.MainMenu;
                 GUILayout.FlexibleSpace();
