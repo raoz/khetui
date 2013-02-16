@@ -38,12 +38,16 @@ public class KhetObjectType{
     }
     public static void ClearTypes(int key)
     {
-        foreach (AreaSquare sq in GameArea.area)
+        try
         {
-            sq.obj = null;
+            foreach (AreaSquare sq in GameArea.area)
+            {
+                sq.obj = null;
+            }
+            if (key != 42)
+                throw new System.Security.SecurityException("Trying to clear KhetObjectTypes without correct key");
+            Types = new List<KhetObjectType>();
         }
-        if (key != 42)
-            throw new System.Security.SecurityException("Trying to clear KhetObjectTypes without correct key");
-        Types = new List<KhetObjectType>();
+        catch { }
     }
 }
