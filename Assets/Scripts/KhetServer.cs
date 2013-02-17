@@ -18,6 +18,7 @@ public class KhetServer
             instance = new KhetServer();
             instance.turn = KhetColor.Silver;
             GameGUIManager.turn = "Silver";
+            LocalUIInput.IsGameOver = false;
             return instance;
         }
     }
@@ -28,6 +29,7 @@ public class KhetServer
             instance = null;
             GameGUIManager.GameResult = "";
             GameGUIManager.ShowObjectTools = false;
+            LocalUIInput.IsGameOver = false;
             return;
         }
         throw new System.Security.SecurityException("Tried to destroy Khet instance with wrong key!!!");
@@ -188,6 +190,7 @@ public class KhetServer
             GameGUIManager.turn = "NOBODY";
             silver.StopInput();
             red.StopInput();
+            LocalUIInput.IsGameOver = true;
             return;
         }
         if (turn == KhetColor.Red)
@@ -280,6 +283,9 @@ public class KhetServer
                 red.GameOver(result);
                 silver.StopInput();
                 red.StopInput();
+                LocalUIInput.IsGameOver = true;
+                red = null;
+                silver = null;
             }
             if (!GameArea.area[x, y].obj.IsShielded(direction))
             {
@@ -301,6 +307,6 @@ public class KhetServer
         {
             laserrenderer.SetPosition(i, path[i]);
         }
-        Object.Destroy(laser, 0.6f);
+        Object.Destroy(laser, 1f);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class LocalUIInput : KhetInput {
     static LocalUIInput currentinstance;
+    public static bool IsGameOver = false;
     public static LocalUIInput CurrentInstance
     {
         get
@@ -24,6 +25,8 @@ public class LocalUIInput : KhetInput {
     private Vector2 selpos;
     public void Update()
     {
+        if (IsGameOver)
+            return;
         if (AcceptingInput && !GameGUIManager.areyousuredialog)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -114,6 +117,7 @@ public class LocalUIInput : KhetInput {
     }
     public override void StopInput()
     {
+        Debug.Log("Test");
         AcceptingInput = false;
         GameGUIManager.ShowObjectTools = false;
         GameObject.Destroy(highlighter);
