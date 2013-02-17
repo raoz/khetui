@@ -66,6 +66,7 @@ public class SettingManager : MonoBehaviour {
                 if (GUI.Button(new Rect(Screen.width / 2 - 150, Screen.height / 5 + 5, 300, 35), "New game", MenuSkin.button))
                 {
                     new CurrentGameSettings();
+                    KhetServer.DestroyInstance(42);
                     state = MenuState.NewGame;
                 }
                 if (GUI.Button(new Rect(Screen.width / 2 - 150, Screen.height / 5 + 5 + 45, 300, 35), "Options", MenuSkin.button))
@@ -109,6 +110,7 @@ public class SettingManager : MonoBehaviour {
                 CurrentGameSettings.Instance.limitturns = GUILayout.Toggle(CurrentGameSettings.Instance.limitturns, "End game as draw after certain amount of turns", MenuSkin.toggle);
                 if (CurrentGameSettings.Instance.limitturns)
                     CurrentGameSettings.Instance.turnslimit = int.Parse(GUILayout.TextField(CurrentGameSettings.Instance.turnslimit.ToString(), MenuSkin.textField));
+                CurrentGameSettings.Instance.turnslimit = CurrentGameSettings.Instance.turnslimit > 0 ? CurrentGameSettings.Instance.turnslimit : 1;
                 GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();

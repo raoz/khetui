@@ -17,6 +17,7 @@ public class KhetServer
                 return instance;
             instance = new KhetServer();
             instance.turn = KhetColor.Silver;
+            GameGUIManager.turn = "Silver";
             return instance;
         }
     }
@@ -25,6 +26,8 @@ public class KhetServer
         if (key == 42)
         {
             instance = null;
+            GameGUIManager.GameResult = "";
+            GameGUIManager.ShowObjectTools = false;
             return;
         }
         throw new System.Security.SecurityException("Tried to destroy Khet instance with wrong key!!!");
@@ -176,19 +179,22 @@ public class KhetServer
     void EndTurn()
     {
         turnid++;
-        if (turnid > CurrentGameSettings.Instance.turnslimit && CurrentGameSettings.Instance.limitturns)
+        if (turnid >= CurrentGameSettings.Instance.turnslimit && CurrentGameSettings.Instance.limitturns)
         {
             Result result = Result.Draw;
             Debug.Log(result);
             silver.GameOver(result);
             red.GameOver(result);
+            GameGUIManager.turn = "NOBODY";
             silver.StopInput();
             red.StopInput();
+            return;
         }
         if (turn == KhetColor.Red)
         {
             turn = KhetColor.Silver;
             red.StopInput();
+            GameGUIManager.turn = "Silver";
             GameMaster.ToInvoke.Add(new WaitedCall(silver.StartInput,2f));
             GameMaster.ToInvoke.Add(new WaitedCall(FireRedLaser, 1.2f));
         }
@@ -196,6 +202,7 @@ public class KhetServer
         {
             turn = KhetColor.Red;
             silver.StopInput();
+            GameGUIManager.turn = "Red";
             GameMaster.ToInvoke.Add(new WaitedCall(red.StartInput, 2f));
             GameMaster.ToInvoke.Add(new WaitedCall(FireSilverLaser, 1.2f));
         }

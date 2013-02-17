@@ -61,11 +61,11 @@ public class GameMaster : MonoBehaviour {
         GameArea.area[8, 7].mod = KhetModifier.RedBlock;
         GameArea.area[1, 0].mod = KhetModifier.SilverBlock;
         GameArea.area[1, 7].mod = KhetModifier.SilverBlock;
-        GameArea.area[7, 1].mod = KhetModifier.SilverBlock;
-        GameArea.area[7, 2].mod = KhetModifier.SilverBlock;
-        GameArea.area[7, 5].mod = KhetModifier.SilverBlock;
-        GameArea.area[7, 6].mod = KhetModifier.SilverBlock;
-        GameArea.area[7, 7].mod = KhetModifier.SilverBlock;
+        GameArea.area[9, 1].mod = KhetModifier.SilverBlock;
+        GameArea.area[9, 2].mod = KhetModifier.SilverBlock;
+        GameArea.area[9, 5].mod = KhetModifier.SilverBlock;
+        GameArea.area[9, 6].mod = KhetModifier.SilverBlock;
+        GameArea.area[9, 7].mod = KhetModifier.SilverBlock;
         #endregion
         #region //HACK Test region
         KhetServer.Instance.SetupRedInput(new LocalUIInput(KhetColor.Red, "Player1"));
